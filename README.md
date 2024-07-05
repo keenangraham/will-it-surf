@@ -12,7 +12,7 @@ Training data from manually annotated images.
 
 Upload image(s) or point to webcam feed -> output condition category.
 
-# Possible extensions
+# Future extensions
 
 * Which board to bring (long/short)?
 * Which location is best between two options?
