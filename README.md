@@ -4,7 +4,7 @@ A deep-learning model to determine whether it's worth going surfing or not based
 
 # Overview
 
-Surf cam feed (multiple images) -> deep-learning model -> surf condition (good/bad)
+Surf cam feed (multiple images) -> deep-learning model -> surf condition (good/bad).
 
 Training data from manually annotated images.
 
