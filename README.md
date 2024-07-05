@@ -1,6 +1,6 @@
 # Will it surf?
 
-A deep-learning model to determine whether it's worth going surfing or not based on live surf cam feed.
+A deep-learning model to determine whether it's worth going surfing or not based on a live surf cam feed.
 
 # Overview
 
