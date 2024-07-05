@@ -1,10 +1,10 @@
 # Will it surf?
 
-A deep-learning model to check a live surf cam and determine whether it's worth going surfing or not.
+A deep-learning model to determine whether it's worth going surfing or not based on live surf cam feed.
 
 # Overview
 
-[Surf cam feed (multiple images)] -> [deep-learning model] -> [surf condition (good/bad)].
+Surf cam feed (multiple images) -> deep-learning model -> surf condition (good/bad)
 
 Training data from manually annotated images.
 
