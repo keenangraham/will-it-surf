@@ -24,4 +24,4 @@ Upload image(s) or point to webcam feed -> output condition category.
 # Future extensions
 
 * Which board to bring (long/short)?
-* Which location is best between two options?
+* Which location is best given two options (e.g. Ocean Beach or Pacifica)?
