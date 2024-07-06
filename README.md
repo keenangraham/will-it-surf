@@ -10,7 +10,7 @@ Surf cam feed (multiple images) -> deep-learning model -> surf condition (good/b
 
 Training data from manually annotated images.
 
-# App
+# Application
 
 Upload image(s) or point to webcam feed -> output condition category.
 
