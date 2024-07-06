@@ -2,6 +2,8 @@
 
 A deep-learning model to determine whether it's worth going surfing or not based on a live surf cam feed.
 
+This is mainly an experiment to see if I can learn a model that recognizes my surfing preferences (not too flat, not too closeout, not too windy, etc.). 
+
 ![image](./assets/example_images.png)
 
 # Overview
