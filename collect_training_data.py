@@ -1,4 +1,4 @@
-from willitsurf import webcam, feed, data
+from willitsurf import feed, data
 
 
 def collect():
