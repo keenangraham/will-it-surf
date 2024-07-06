@@ -2,6 +2,8 @@
 
 A deep-learning model to determine whether it's worth going surfing or not based on a live surf cam feed.
 
+![image](./assets/example_images.png)
+
 # Overview
 
 Surf cam feed (multiple images) -> deep-learning model -> surf condition (good/bad).
