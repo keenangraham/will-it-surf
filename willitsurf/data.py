@@ -29,7 +29,8 @@ def collect_training_example(raw_data_folder: str, webcam_urls: dict[str, str], 
 
 def annotate_raw_data():
     # calculate groups of files in raw_data_folder
+    # filter out groups that are already in labels
     # for every group, display as grid
     # ask for g/b condition report
-    # store (group, [files], condition) tuples in processed folde
+    # store (group, [files], condition) tuples in labels
     pass
