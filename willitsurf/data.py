@@ -25,3 +25,7 @@ def collect_training_example(raw_data_folder: str, webcam_urls: dict[str, str], 
             path = f'{raw_data_folder}/{filename}'
             logging.info(f'saving training file to {path}')
             im.save(path)
+
+
+def annotate_raw_data():
+    pass
