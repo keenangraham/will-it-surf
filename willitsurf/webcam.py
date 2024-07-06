@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -36,9 +37,29 @@ def gather_images_from_all_webcams(webcam_urls: list[str], num_images: int = 3, 
         for url in webcam_urls:
             futures.append(
                 executor.submit(
-                    gather_images_from_webcam_feed, url, num_images, secs_between_capture, 
+                    gather_images_from_webcam_feed, url, num_images, secs_between_capture,
                 )
             )
         for f in futures:
             all_images.extend(f.result())
+    return all_images
+
+
+def gather_grouped_images_from_all_webcams(webcam_urls: dict[str, str], num_images: int = 3, secs_between_capture: int = 10) -> dict[str, list[Image]]:
+    all_images = {}
+    with ThreadPoolExecutor() as executor:
+        futures = {}
+        for name, url in webcam_urls.items():
+            if name not in all_images:
+                all_images[name] = []
+            if url not in futures:
+                futures[name] = []
+            futures[name].append(
+                executor.submit(
+                    gather_images_from_webcam_feed, url, num_images, secs_between_capture,
+                )
+            )
+        for k, v in futures.items():
+            for f in v:
+                all_images[k].extend(f.result())
     return all_images
