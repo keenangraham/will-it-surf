@@ -53,6 +53,7 @@ class ConvNet(nn.Module):
         x = self.fc2(x)
         print(x.shape)
         x = self.lsm1(x)
+        return x
 
 
 def train(model, device, train_dataloader, optim, epoch):
