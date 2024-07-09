@@ -94,8 +94,6 @@ def test(model, device, test_dataloader):
     )
 
 
-# torch.from_numpy(np.array(PIL.Image.open('./assets/data/raw/slm-2024-07-09-15-36-31-image-2.png')).transpose(2, 0, 1)).unsqueeze(0)
-
 '''
 import torch; import numpy as np; import PIL; from willitsurf.models.conv import ConvNet
 x = torch.from_numpy(np.array(PIL.Image.open('./assets/data/raw/slm-2024-07-09-15-36-31-image-2.png')).transpose(2, 0, 1))
