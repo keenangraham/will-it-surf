@@ -32,7 +32,7 @@ class ConvNet(nn.Module):
         x = self.conv1(x)
         print('after conv1', x.shape)
         x = F.relu(x)
-        print('after reul1', x.shape)
+        print('after relu1', x.shape)
         x = self.conv2(x)
         print('after conv2', x.shape)
         x = F.relu(x)
@@ -95,3 +95,11 @@ def test(model, device, test_dataloader):
 
 
 # torch.from_numpy(np.array(PIL.Image.open('./assets/data/raw/slm-2024-07-09-15-36-31-image-2.png')).transpose(2, 0, 1)).unsqueeze(0)
+
+'''
+import torch; import numpy as np; import PIL; from willitsurf.models.conv import ConvNet
+x = torch.from_numpy(np.array(PIL.Image.open('./assets/data/raw/slm-2024-07-09-15-36-31-image-2.png')).transpose(2, 0, 1))
+d = (x / 255.0).unsqueeze(0).repeat(5, 1, 1, 1)
+c = ConvNet()
+c.forward(x)
+'''
