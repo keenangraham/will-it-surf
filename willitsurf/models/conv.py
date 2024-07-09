@@ -22,7 +22,7 @@ class ConvNet(nn.Module):
         self.dropout1 = nn.Dropout2d(0.10)
         self.dropout2 = nn.Dropout(0.25)
         self.fullyconnected1 = nn.Linear(1811328, 64)
-        self.fullyconnected2 = nn.Linear(64, 10)
+        self.fullyconnected2 = nn.Linear(64, 2)
         self.maxpool1 = nn.MaxPool2d(2)
         self.flatten1 = nn.Flatten()
         self.logsoftmax1 = nn.LogSoftmax(dim=1)
