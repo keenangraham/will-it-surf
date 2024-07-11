@@ -12,8 +12,6 @@ import logging
 
 import torch
 
-from torch.utils.data import Dataset
-
 from pathlib import Path
 
 import pandas as pd
@@ -76,15 +74,3 @@ def annotate_raw_data(raw_data_folder: str, annotations_file: str):
         df = pd.concat([df, new_df], ignore_index=True)
         df.to_csv(annotations_file, sep='\t', index=False)
     return df
-
-
-class SurfImageDataset(Dataset):
-
-    def __init__(self, annotations_file, image_dir, transform=None, target_transform=None):
-        pass
-
-    def __len__(self):
-        pass
-
-    def __getitem__(self, idx):
-        pass
