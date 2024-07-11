@@ -6,6 +6,8 @@ from .webcam import gather_grouped_images_from_all_webcams
 
 from .feed import urls
 
+from .image import stitch_images
+
 import logging
 
 import torch
@@ -35,33 +37,50 @@ def collect_training_example(raw_data_folder: str, webcam_urls: dict[str, str], 
             im.save(path)
 
 
+def get_grouped_files(raw_data_folder: str) -> dict[str, list[str]]:
+    grouped_files = {}
+    raw_files = [f for f in Path(raw_data_folder).glob('*.png')]
+    for raw_file in raw_files:
+        group_name = raw_file.name.split('-image')[0]
+        if group_name not in grouped_files:
+            grouped_files[group_name] = []
+        grouped_files[group_name].append(raw_file)
+    return grouped_files
+
+
 def annotate_raw_data(raw_data_folder: str, annotations_file: str):
     if Path(annotations_file).exists():
         df = pd.read_csv(annotations_file, sep='\t')
     else:
-        df = pd.DataFrame(columns=['group', 'files' 'condition'])
-    grouped_files = {}
-    raw_files = Path(raw_data_folder)
-    for raw_file in raw_files:
-        group_name = fn[0].split('-image')[0]
-        if group_name not in grouped_files:
-            grouped_files[group_name] = []
-        grouped_files[group_name].append(raw_file.name)
-    # calculate groups of files in raw_data_folder
-    # filter out groups that are already in labels
-    # for every group, display as grid
-    # ask for g/b condition report
-    # store (group, [files], condition) tuples in labels
-    raw_files = [f.name for f in Path(raw_data_folder).iterdir() if f.is_file()]
-    annotated_files = 
-    pass
-
+        df = pd.DataFrame(columns=['group', 'files', 'condition'])
+    grouped_files = get_grouped_files(raw_data_folder)
+    entries = []
+    for group, raw_files in grouped_files.items():
+        if group in df['group'].values:
+            continue
+        stitched_image = stitch_images(raw_files)
+        stitched_image.show()
+        while True:
+            condition = input(f'Annotate {group} with g for good or b for bad: ')
+            if condition in ['g', 'b']:
+                break
+            print('invalid input, enter 0, 1')
+        new_entry = {
+            'group': group,
+            'files': [str(f) for f in raw_files],
+            'condition': 1 if condition == 'g' else 0
+        }
+        entries.append(new_entry)
+    if entries:
+        new_df = pd.DataFrame(entries)
+        df = pd.concat([df, new_df], ignore_index=True)
+        df.to_csv(annotations_file, sep='\t', index=False)
+    return df
 
 
 class SurfImageDataset(Dataset):
 
     def __init__(self, annotations_file, image_dir, transform=None, target_transform=None):
-        self.image_labels = pd
         pass
 
     def __len__(self):
