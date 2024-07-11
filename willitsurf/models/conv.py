@@ -17,11 +17,11 @@ class ConvNet(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.conv1 = nn.Conv2d(3, 16, 3, 1)
+        self.conv1 = nn.Conv2d(3, 16, 10, 4)
         self.conv2 = nn.Conv2d(16, 32, 3, 1)
         self.dropout1 = nn.Dropout2d(0.10)
         self.dropout2 = nn.Dropout(0.25)
-        self.fullyconnected1 = nn.Linear(1811328, 64)
+        self.fullyconnected1 = nn.Linear(107328, 64)
         self.fullyconnected2 = nn.Linear(64, 2)
         self.maxpool1 = nn.MaxPool2d(2)
         self.flatten1 = nn.Flatten()
