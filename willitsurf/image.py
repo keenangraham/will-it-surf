@@ -4,6 +4,7 @@ import logging
 
 from PIL import Image
 
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -25,3 +26,16 @@ def make_image_grid(images: list[Image]) -> Image:
         y = row * max_height
         grid_image.paste(image, (x, y))
     return grid_image
+
+
+def stitch_images(image_paths: list[Path]) -> Image:
+    images = [Image.open(f) for f in sorted(image_paths)]
+    widths, heights = zip(*(im.size for im in images))
+    total_width = sum(widths)
+    max_height = max(heights)
+    stitched_image = Image.new('RGB', (total_width, max_height))
+    x_offset = 0
+    for im in images:
+        stitched_image.paste(im, (x_offset, 0))
+        x_offset += im.size[0]
+    return stitched_image
