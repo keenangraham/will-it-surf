@@ -8,9 +8,8 @@ import torch.optim as optim
 
 from torch.utils.data import DataLoader
 
-from torchvision import datasets, transforms
 
-import matplotlib.pyplot as plt
+logger = logging.getLogger(__name__)
 
 
 class ConvNet(nn.Module):
@@ -28,31 +27,31 @@ class ConvNet(nn.Module):
         self.logsoftmax1 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
-        print('input', x.shape)
+        logger.debug(f'input {x.shape}')
         x = self.conv1(x)
-        print('after conv1', x.shape)
+        logger.debug(f'after conv1 {x.shape}')
         x = F.relu(x)
-        print('after relu1', x.shape)
+        logger.debug(f'after relu1 {x.shape}')
         x = self.conv2(x)
-        print('after conv2', x.shape)
+        logger.debug(f'after conv2 {x.shape}')
         x = F.relu(x)
-        print('after relu2', x.shape)
+        logger.debug(f'after relu2 {x.shape}')
         x = self.maxpool1(x)
-        print('after maxpool1', x.shape)
+        logger.debug(f'after maxpool1 {x.shape}')
         x = self.dropout1(x)
-        print('after dropout', x.shape)
+        logger.debug(f'after dropout {x.shape}')
         x = self.flatten1(x)
-        print('after flatten', x.shape)
+        logger.debug(f'after flatten {x.shape}')
         x = self.fullyconnected1(x)
-        print('after linear1', x.shape)
+        logger.debug(f'after linear1 {x.shape}')
         x = F.relu(x)
-        print('after relu3', x.shape)
+        logger.debug(f'after relu3 {x.shape}')
         x = self.dropout2(x)
-        print('after dropout2', x.shape)
+        logger.debug(f'after dropout2 {x.shape}')
         x = self.fullyconnected2(x)
-        print('after linear2', x.shape)
+        logger.debug(f'after linear2 {x.shape}')
         x = self.logsoftmax1(x)
-        print('after logsoftmax', x.shape)
+        logger.debug(f'after logsoftmax {x.shape}')
         return x
 
 
