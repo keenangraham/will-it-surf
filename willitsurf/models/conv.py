@@ -101,3 +101,28 @@ d = (x / 255.0).unsqueeze(0).repeat(5, 1, 1, 1)
 c = ConvNet()
 c.forward(x)
 '''
+
+# Normalize train_X.mean() / 256.0, train_x.std() / 256.0
+def make_train_dataloader(train_data):
+    return torch.utils.data.DataLoader(
+        test_data,
+        batch_size=32,
+        shuffle=True
+    )
+
+
+def make_test_dataloader(test_data):
+    return torch.utils.data.DataLoader(
+        test_data,
+        batch_size=32,
+        shuffle=True
+    )
+
+# torch.manual_seed(0)
+# device = torce.device('cpu')
+# model = ConvNet()
+# optimizer = optim.Adadelta(model.parameters(), lr=0.5)
+
+#for epoch in range(1, 3):
+#    train(model, device, train_dataloader, optimizer, epoch)
+#    trest(model, device, test_dataloader)
