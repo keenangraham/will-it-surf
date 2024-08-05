@@ -8,6 +8,7 @@ import torch.optim as optim
 
 from torch.utils.data import DataLoader
 
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ class ConvNet(nn.Module):
         self.conv2 = nn.Conv2d(16, 32, 3, 1)
         self.dropout1 = nn.Dropout2d(0.10)
         self.dropout2 = nn.Dropout(0.25)
-        self.fullyconnected1 = nn.Linear(107328, 64)
+        self.fullyconnected1 = nn.Linear(327488, 64)
         self.fullyconnected2 = nn.Linear(64, 2)
         self.maxpool1 = nn.MaxPool2d(2)
         self.flatten1 = nn.Flatten()
@@ -125,3 +126,18 @@ def make_test_dataloader(test_data):
 #for epoch in range(1, 3):
 #    train(model, device, train_dataloader, optimizer, epoch)
 #    trest(model, device, test_dataloader)
+
+'''
+from willitsurf.models.conv import ConvNet
+from torch.utils.data import DataLoader
+from willitsurf.dataset import SurfImageDataset
+from willitsurf.models.conv import train
+s = SurfImageDataset('./assets/data/labels/annotations.tsv', './assets/data/raw')
+d = DataLoader(s, batch_size=10, shuffle=True)
+a = Adadelta(c.parameters(), lr=0.5)
+c = ConvNet()
+a = Adadelta(c.parameters(), lr=0.5)
+train(c, 'cpu', d, a, 1)
+from willitsurf.models.conv import test
+test(c, 'cpu', d)
+'''
