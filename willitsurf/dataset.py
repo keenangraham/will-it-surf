@@ -22,7 +22,7 @@ def convert_files_columns(files: str):
 
 class SurfImageDataset(Dataset):
 
-    def __init__(self, annotations_file: str, raw_data_folder: str, transform=None, target_transform=None):
+    def __init__(self, annotations_file: str, raw_data_folder: str, cache=True, transform=None, target_transform=None):
         self.annotations_df = pd.read_csv(
             annotations_file,
             sep='\t',
@@ -33,11 +33,14 @@ class SurfImageDataset(Dataset):
         self.raw_data_folder = raw_data_folder
         self.transform = transform
         self.target_transform = target_transform
+        self.cache = {}
 
     def __len__(self):
         return len(self.annotations_df)
 
     def __getitem__(self, idx):
+        if idx in self.cache:
+            return self.cache[idx]
         record = self.annotations_df.iloc[idx]
         images = record.files
         label = record.condition
@@ -47,4 +50,5 @@ class SurfImageDataset(Dataset):
             image = self.transform(image)
         if self.target_transform:
             label = self.target_transform(label)
+        self.cache[idx] = (image, label)
         return image, label
