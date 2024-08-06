@@ -128,14 +128,15 @@ def make_test_dataloader(test_data):
 #    trest(model, device, test_dataloader)
 
 '''
-from willitsurf.models.conv import ConvNet
 from torch.utils.data import DataLoader
+from torch.optim import Adadelta
+from willitsurf.models.conv import ConvNet
 from willitsurf.dataset import SurfImageDataset
 from willitsurf.models.conv import train
 s = SurfImageDataset('./assets/data/labels/annotations.tsv', './assets/data/raw')
 d = DataLoader(s, batch_size=10, shuffle=True)
-a = Adadelta(c.parameters(), lr=0.5)
 c = ConvNet()
+c.to('mps')
 a = Adadelta(c.parameters(), lr=0.5)
 train(c, 'cpu', d, a, 1)
 from willitsurf.models.conv import test
