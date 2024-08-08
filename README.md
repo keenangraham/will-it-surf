@@ -18,11 +18,11 @@ Upload image(s) or point to webcam feed -> output condition category.
 
 # Roadmap
 
-- [ ] Gather training data and hand label (based on my preference)
+- [x] Gather training data and hand label (based on my preference)
   * how to preprocess and store images?
   * include other metrics besides images (e.g. wind speed/wave height)?
-- [ ] Determine model architecture and loss function
-- [ ] Train and monitor performance
+- [x] Determine model architecture and loss function
+- [x] Train and monitor performance
 - [ ] Create and deploy application
 
 # Future extensions
