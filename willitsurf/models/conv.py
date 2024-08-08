@@ -71,6 +71,30 @@ def train(model, device, train_dataloader, optim, epoch):
                 f' {100.0 * b_i / len(train_dataloader)}, {loss.item()}'
             )
 
+
+def validate(model, device, val_dataloader):
+    model.eval()
+    loss = 0
+    success = 0
+    with torch.no_grad():
+        for X, y in val_dataloader:
+            X, y = X.to(device), y.to(device)
+            pred_prob = model(X)
+            loss += F.nll_loss(
+                pred_prob,
+                y,
+                reduction='sum'
+            ).item()
+            pred = pred_prob.argmax(dim=1, keepdim=True)
+            success += pred.eq(y.view_as(pred)).sum().item()
+    loss /= len(val_dataloader.dataset)
+    print(
+        f'Val dataset: Overall loss: {loss} '
+        f'Overall accuracy: {success}/{len(val_dataloader.dataset)} '
+        f'({100.0 * success / len(val_dataloader.dataset)})'
+    )
+
+
 def test(model, device, test_dataloader):
     model.eval()
     loss = 0
