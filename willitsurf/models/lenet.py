@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 class LeNet(nn.Module):
     def __init__(self):
         super().__init__()
-        self.cn1 = nn.Conv2d(3, 6, 10, 2)
-        self.cn2 = nn.Conv2d(6, 16, 10, 4)
-        self.fc1 = nn.Linear(9440, 120)
+        self.cn1 = nn.Conv2d(3, 6, 10, 4)
+        self.cn2 = nn.Conv2d(6, 16, 5, 1)
+        self.fc1 = nn.Linear(10240, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 2)
 
