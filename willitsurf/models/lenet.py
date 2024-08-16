@@ -17,10 +17,10 @@ class LeNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.cn1 = nn.Conv2d(3, 6, 10, 4)
-        self.cn2 = nn.Conv2d(6, 16, 5, 1)
-        self.fc1 = nn.Linear(10240, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 2)
+        self.cn2 = nn.Conv2d(6, 12, 5, 2)
+        self.fc1 = nn.Linear(1920, 256)
+        self.fc2 = nn.Linear(256, 128)
+        self.fc3 = nn.Linear(128, 2)
 
     def forward(self, x):
         logger.debug(f'input {x.shape}')
