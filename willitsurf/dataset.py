@@ -29,7 +29,7 @@ def convert_files_columns(files: str):
 
 class SurfImageDataset(Dataset):
 
-    def __init__(self, annotations_file: str, raw_data_folder: str, cache=True, transform=None, target_transform=None):
+    def __init__(self, annotations_file: str, raw_data_folder: str, cache=True, transform=None, target_transform=None, relative_path_to_assets=None):
         self.annotations_df = pd.read_csv(
             annotations_file,
             sep='\t',
@@ -40,6 +40,7 @@ class SurfImageDataset(Dataset):
         self.raw_data_folder = raw_data_folder
         self.transform = transform
         self.target_transform = target_transform
+        self.relative_path_to_assets = relative_path_to_assets
         self.cache = {}
 
     def __len__(self):
@@ -50,6 +51,8 @@ class SurfImageDataset(Dataset):
             return self.cache[idx]
         record = self.annotations_df.iloc[idx]
         images = record.files
+        if self.relative_path_to_assets is not None:
+            images = [f'{self.relative_path_to_assets}{im}' for im in images]
         label = record.condition
         stitched_image = stitch_images(images)
         image = torch.from_numpy(np.array(stitched_image).transpose(2, 0, 1)) / 255.0
