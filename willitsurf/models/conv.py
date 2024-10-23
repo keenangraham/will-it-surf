@@ -87,7 +87,11 @@ def train(model, device, train_dataloader, optim, epoch):
         y = y.view(-1, 1).float()
         optim.zero_grad()
         logits = model(X)
-        loss = F.binary_cross_entropy_with_logits(logits, y)
+        loss = F.binary_cross_entropy_with_logits(
+            logits,
+            y,
+            pos_weight=torch.tensor(4.5)
+        )
         loss.backward()
         optim.step()
         if b_i % 10 == 0:
@@ -109,7 +113,8 @@ def validate(model, device, val_dataloader):
             loss += F.binary_cross_entropy_with_logits(
                 logits,
                 y,
-                reduction='sum'
+                pos_weight=torch.tensor(4.5),
+                reduction='sum',
             ).item()
             pred = (logits > 0).float()
             success += (pred == y).sum().item()
@@ -133,6 +138,7 @@ def test(model, device, test_dataloader):
             loss += F.binary_cross_entropy_with_logits(
                 logits,
                 y,
+                pos_weight=torch.tensor(4.5),
                 reduction='sum'
             ).item()
             pred = (logits > 0).float()
