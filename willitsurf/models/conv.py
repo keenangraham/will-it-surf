@@ -13,7 +13,7 @@ class ConvBlock(nn.Module):
             d_out: int,
             k_size: int = 3,
             stride: int = 1,
-            p: float = 0.05,
+            p: float = 0.10,
             use_maxpool: bool = True,
             use_batch_norm: bool = True,
             use_dropout: bool = False,
@@ -51,28 +51,32 @@ class ConvNet(nn.Module):
                 ConvBlock(3, 8, k_size=9, stride=4),
                 ConvBlock(8, 16, stride=2),
                 ConvBlock(16, 32),
-#                ConvBlock(32, 64),
-#                ConvBlock(64, 128),
+#               ConvBlock(32, 64),
+#               ConvBlock(64, 128),
             ],
         )
- #       self.mp = nn.MaxPool2d(2)
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(3584, 64)
-        self.do1 = nn.Dropout(0.05)
-#        self.fc2 = nn.Linear(128, 64)
-        self.fc2 = nn.Linear(64, 1)
-        self.batch_norm = nn.BatchNorm1d(64)
+        self.fc1 = nn.Linear(3584, 512)
+        self.fc2 = nn.Linear(512, 128)
+        self.fc3 = nn.Linear(128, 1)
+        self.bn1 = nn.BatchNorm1d(512)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.do1 = nn.Dropout(0.15)
+        self.do2 = nn.Dropout(0.05)
 
     def forward(self, x):
         for block in self.conv_blocks:
             x = block(x)
-#        x = self.mp(x)
         x = self.flatten(x)
         x = self.fc1(x)
-        x = self.batch_norm(x)
+        x = self.bn1(x)
         x = F.relu(x)
         x = self.do1(x)
         x = self.fc2(x)
+        x = self.bn2(x)
+        x = F.relu(x)
+        x = self.do2(x)
+        x = self.fc3(x)
         return x
 
 
