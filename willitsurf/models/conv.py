@@ -17,28 +17,36 @@ class ConvNet(nn.Module):
 
     def __init__(self):
         super().__init__()
+        self.bn1 = nn.BatchNorm2d(3)
         self.conv1 = nn.Conv2d(3, 16, 10, 4)
+        self.bn2 = nn.BatchNorm2d(16)
         self.conv2 = nn.Conv2d(16, 32, 3, 1)
+        self.bn3 = nn.BatchNorm2d(32)
         self.dropout1 = nn.Dropout2d(0.10)
         self.dropout2 = nn.Dropout(0.25)
         self.fullyconnected1 = nn.Linear(327488, 64)
-        self.fullyconnected2 = nn.Linear(64, 2)
+        self.fullyconnected2 = nn.Linear(64, 1)
         self.maxpool1 = nn.MaxPool2d(2)
         self.flatten1 = nn.Flatten()
-        self.logsoftmax1 = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         logger.debug(f'input {x.shape}')
+        x = self.bn1(x)
+        logger.debug(f'after bn1 {x.shape}')
         x = self.conv1(x)
         logger.debug(f'after conv1 {x.shape}')
         x = F.relu(x)
         logger.debug(f'after relu1 {x.shape}')
+        x = self.bn2(x)
+        logger.debug(f'after bn2 {x.shape}')
         x = self.conv2(x)
         logger.debug(f'after conv2 {x.shape}')
         x = F.relu(x)
         logger.debug(f'after relu2 {x.shape}')
         x = self.maxpool1(x)
         logger.debug(f'after maxpool1 {x.shape}')
+        x = self.bn3(x)
+        logger.debug(f'after bn3 {x.shape}')
         x = self.dropout1(x)
         logger.debug(f'after dropout {x.shape}')
         x = self.flatten1(x)
@@ -51,8 +59,6 @@ class ConvNet(nn.Module):
         logger.debug(f'after dropout2 {x.shape}')
         x = self.fullyconnected2(x)
         logger.debug(f'after linear2 {x.shape}')
-        x = self.logsoftmax1(x)
-        logger.debug(f'after logsoftmax {x.shape}')
         return x
 
 
@@ -60,9 +66,10 @@ def train(model, device, train_dataloader, optim, epoch):
     model.train()
     for b_i, (X, y) in enumerate(train_dataloader):
         X, y = X.to(device), y.to(device)
+        y = y.view(-1, 1).float()
         optim.zero_grad()
         pred_prob = model(X)
-        loss = F.nll_loss(pred_prob, y)
+        loss = F.binary_cross_entropy_with_logits(pred_prob, y)
         loss.backward()
         optim.step()
         if b_i % 10 == 0:
@@ -79,8 +86,9 @@ def validate(model, device, val_dataloader):
     with torch.no_grad():
         for X, y in val_dataloader:
             X, y = X.to(device), y.to(device)
+            y = y.view(-1, 1).float()
             pred_prob = model(X)
-            loss += F.nll_loss(
+            loss += F.binary_cross_entropy_with_logits(
                 pred_prob,
                 y,
                 reduction='sum'
@@ -102,8 +110,9 @@ def test(model, device, test_dataloader):
     with torch.no_grad():
         for X, y in test_dataloader:
             X, y = X.to(device), y.to(device)
+            y = y.view(-1, 1).float()
             pred_prob = model(X)
-            loss += F.nll_loss(
+            loss += F.binary_cross_entropy_with_logits(
                 pred_prob,
                 y,
                 reduction='sum'
@@ -120,7 +129,7 @@ def test(model, device, test_dataloader):
 
 def make_train_dataloader(train_data):
     return torch.utils.data.DataLoader(
-        test_data,
+        train_data,
         batch_size=32,
         shuffle=True
     )
